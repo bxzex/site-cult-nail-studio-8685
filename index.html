@@ -201,7 +201,7 @@
         header {
             position: fixed;
             top: 0; left: 0; width: 100%;
-            z-index: 100;
+            z-index: 9999;
             padding: 1.5rem 5%;
             transition: var(--transition);
             display: flex;
@@ -271,7 +271,7 @@
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(10, 10, 10, 0.98);
             backdrop-filter: blur(30px);
-            z-index: 200;
+            z-index: 9998;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -288,13 +288,6 @@
             font-family: 'Cormorant Garamond', serif;
             display: block;
             padding: 1rem 0;
-        }
-        .mobile-close {
-            position: absolute;
-            top: 2rem; right: 2rem;
-            background: none; border: none;
-            color: white; font-size: 28px;
-            cursor: pointer;
         }
 
         /* Sticky Sidebar */
@@ -356,7 +349,13 @@
         .btn-group { display: flex; gap: 1rem; margin-top: 2.5rem; }
 
         /* Hero Animations */
-        .hero-anim { opacity: 0; }
+        .hero-anim { 
+            opacity: 0; 
+            animation-name: heroReveal;
+            animation-duration: 0.8s;
+            animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+            animation-fill-mode: forwards;
+        }
         @keyframes heroReveal {
             from { opacity: 0; transform: translateY(40px); }
             to { opacity: 1; transform: translateY(0); }
@@ -728,7 +727,7 @@
         /* Promo Popup */
         .promo-popup {
             position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
-            z-index: 9999; display: none; align-items: center; justify-content: center; padding: 1rem;
+            z-index: 100000; display: none; align-items: center; justify-content: center; padding: 1rem;
         }
         .promo-content {
             background: var(--surface); border: 1px solid var(--glass-border);
@@ -754,47 +753,56 @@
             color: var(--bg); font-weight: 700; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.1em; display: block;
         }
 
-        /* MANDATORY MOBILE OVERRIDES */
-        *, *::before, *::after { box-sizing: border-box; }
-        html, body { overflow-x: hidden !important; width: 100%; margin: 0; padding: 0; }
-        img, video, iframe { max-width: 100%; height: auto; }
-        a { color: inherit; text-decoration: none; }
+        /* Responsive Design */
+        .hamburger { display: none; }
         
-        /* DESKTOP NAV DEFAULTS */
-        nav, header { position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; z-index: 9999 !important; display: flex !important; justify-content: space-between !important; align-items: center !important; padding: 1rem 5% !important; background: rgba(10,10,10,0.9) !important; backdrop-filter: blur(20px) !important; box-sizing: border-box !important; }
-        body { padding-top: 100px !important; }
-        .hamburger, .menu-toggle, .mobile-menu-btn { display: none !important; }
-        .sidebar, .side-bar, .sticky-sidebar { display: flex; }
-        section, .section { padding: clamp(4rem, 8vh, 8rem) 5% !important; width: 100% !important; box-sizing: border-box !important; overflow: hidden; }
-        h1, h2, h3 { overflow-wrap: break-word; word-break: break-word; max-width: 100%; }
+        @media (max-width: 1024px) {
+            .grid-4 { grid-template-columns: repeat(2, 1fr); }
+            .grid-3 { grid-template-columns: repeat(2, 1fr); }
+            .grid-2 { grid-template-columns: 1fr; gap: 3rem; }
+            
+            .hero { padding-top: 120px; text-align: center; }
+            .hero-content { padding-right: 0; }
+            .btn-group { justify-content: center; }
+            .hero-image-wrapper { height: 50vh; margin-top: 2rem; }
+            
+            .nav-links { display: none; }
+            .hamburger { display: flex; align-items: center; justify-content: center; font-size: 28px; color: white; background: none; border: none; cursor: pointer; }
+            
+            .about-image { order: 2; }
+            .about-content { order: 1; }
+            
+            .spotlight-grid { grid-template-columns: 1fr; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+        }
 
-        /* MOBILE OVERRIDES */
         @media (max-width: 768px) {
-            nav, header { padding: 15px !important; background: rgba(0,0,0,0.98) !important; border-bottom: 1px solid rgba(255,255,255,0.05); }
-            nav .logo, nav .brand, header .logo { font-size: 1.1rem !important; max-width: 50vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: auto; }
-            nav .nav-links, nav .desktop-nav, nav ul { display: none !important; }
-            .hamburger, .menu-toggle, .mobile-menu-btn { display: flex !important; align-items: center; justify-content: center; font-size: 24px; color: white; background: none; border: none; cursor: pointer; z-index: 101; margin-left: 15px; }
+            .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+            .bento-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 150px; }
+            .bento-item:nth-child(n) { grid-column: span 1; grid-row: span 1; }
             
-            .hero { min-height: auto !important; padding-top: 130px !important; justify-content: flex-start !important; gap: 2rem !important; }
-            .hero h1, .hero-title { font-size: clamp(2rem, 8vw, 3rem) !important; margin-bottom: 1rem !important; }
-            .hero p, .hero-subtitle { font-size: 1rem !important; margin-bottom: 1.5rem !important; }
+            .heading-xl { font-size: clamp(2.5rem, 8vw, 3.5rem); }
+            .heading-lg { font-size: clamp(2rem, 6vw, 2.5rem); }
+            .heading-md { font-size: 1.75rem; }
             
-            [class*="grid"], [class*="row"], .about-grid, .services-grid, .team-grid, .gallery-grid, .bento-grid, .footer-grid, .footer-columns, .hero { grid-template-columns: 1fr !important; display: flex !important; flex-direction: column !important; }
-            [class*="grid"] > *, .bento-grid > *, .gallery-grid > * { grid-column: span 1 !important; grid-row: span 1 !important; width: 100% !important; }
+            section { padding: 4rem 0; }
             
-            footer { padding: 2rem 1rem !important; }
-            .hero-buttons, .hero-cta, .hero .btn-group, .hero-actions { display: flex !important; flex-direction: column !important; align-items: center; width: 100%; padding: 0 1rem; }
-            .hero-buttons a, .hero-buttons button, .hero .btn-group a { width: 100% !important; max-width: 320px; text-align: center; box-sizing: border-box; margin: 0 0 15px 0 !important; }
+            .footer-grid { grid-template-columns: 1fr; }
             
-            [class*="chat-widget"], [class*="floating-chat"], #chat-widget { bottom: 90px !important; right: 15px !important; }
-            .sidebar, .side-bar, .sticky-sidebar { display: none !important; }
-            .cursor-dot, .cursor-outline { display: none !important; }
+            .sticky-sidebar { display: none; }
+            .mobile-sticky-cta { display: block; }
+            
+            .hero-image-wrapper { height: 40vh; }
+            .btn-group { flex-direction: column; }
+            .btn-group .btn { width: 100%; }
+            
+            .ig-grid { grid-template-columns: repeat(2, 1fr); }
+            
+            .chat-widget { bottom: 80px; right: 20px; }
+            .chat-panel { right: -10px; width: 300px; }
             
             .final-cta { margin: 0; border-radius: 0; padding: 4rem 1rem; }
-            .mobile-sticky-cta { display: block !important; }
-            .spotlight-images { flex-direction: column; }
-            .spotlight-images img { width: 100%; }
-            .spotlight-images img:nth-child(2) { transform: translateY(0); margin-top: 1rem; }
         }
     </style>
 </head>
@@ -807,7 +815,6 @@
 
     <!-- Mobile Menu -->
     <div class="mobile-menu" id="mobileMenu">
-        <button class="mobile-close" id="closeMenu"><i class="fas fa-times"></i></button>
         <a href="#home" class="mobile-link">Home</a>
         <a href="#about" class="mobile-link">The Studio</a>
         <a href="#services" class="mobile-link">Services</a>
@@ -1387,13 +1394,25 @@
             // Mobile Menu Toggle
             const hamburgerBtn = document.getElementById('hamburgerBtn');
             const mobileMenu = document.getElementById('mobileMenu');
-            const closeMenu = document.getElementById('closeMenu');
             const mobileLinks = document.querySelectorAll('.mobile-link');
 
-            const toggleMenu = () => mobileMenu.classList.toggle('active');
-            hamburgerBtn.addEventListener('click', toggleMenu);
-            closeMenu.addEventListener('click', toggleMenu);
-            mobileLinks.forEach(link => link.addEventListener('click', toggleMenu));
+            const toggleMenu = () => {
+                mobileMenu.classList.toggle('active');
+                if (mobileMenu.classList.contains('active')) {
+                    hamburgerBtn.innerHTML = '<i class="fas fa-times"></i>';
+                } else {
+                    hamburgerBtn.innerHTML = '<i class="fas fa-bars"></i>';
+                }
+            };
+
+            if(hamburgerBtn) {
+                hamburgerBtn.addEventListener('click', toggleMenu);
+            }
+            
+            mobileLinks.forEach(link => link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                hamburgerBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            }));
 
             // Scroll Reveal (Intersection Observer)
             const revealElements = document.querySelectorAll('.reveal');
@@ -1581,50 +1600,5 @@
             console.error("Script Error:", e);
         }
     </script>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const hamburger = document.querySelector('.hamburger') || document.querySelector('.menu-toggle');
-    const mobileMenu = document.querySelector('.mobile-menu');
-    
-    if (hamburger && mobileMenu) {
-      hamburger.addEventListener('click', function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        const isActive = mobileMenu.classList.contains('active');
-        if (isActive) {
-          mobileMenu.classList.remove('active');
-          mobileMenu.style.transform = 'translateX(100%)';
-          hamburger.innerHTML = '<i class="fas fa-bars"></i>';
-        } else {
-          mobileMenu.classList.add('active');
-          mobileMenu.style.transform = 'translateX(0)';
-          hamburger.innerHTML = '<i class="fas fa-times" style="font-size: 28px;"></i>';
-        }
-      });
-
-      // Close when clicking any link inside the mobile menu
-      const links = mobileMenu.querySelectorAll('a');
-      links.forEach(link => {
-        link.addEventListener('click', function() {
-          mobileMenu.classList.remove('active');
-          mobileMenu.style.transform = 'translateX(100%)';
-          hamburger.innerHTML = '<i class="fas fa-bars"></i>';
-        });
-      });
-      
-      // Close button inside menu (if it exists separately)
-      const closeBtn = mobileMenu.querySelector('.close-menu') || mobileMenu.querySelector('.mobile-close');
-      if (closeBtn) {
-        closeBtn.addEventListener('click', function() {
-          mobileMenu.classList.remove('active');
-          mobileMenu.style.transform = 'translateX(100%)';
-          hamburger.innerHTML = '<i class="fas fa-bars"></i>';
-        });
-      }
-    }
-  });
-</script>
 </body>
 </html>
